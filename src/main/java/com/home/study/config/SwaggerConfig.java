@@ -23,8 +23,8 @@ public class SwaggerConfig {
 	@Bean
 	public Docket api() {
 		return new Docket(DocumentationType.SWAGGER_2)
-				.apiInfo(getApiInfo()).select().apis(RequestHandlerSelectors.any())
-				.paths(PathSelectors.any()).build();
+				.apiInfo(getApiInfo()).select().apis(RequestHandlerSelectors.basePackage("com.home.study.controllers"))
+				.paths(PathSelectors.any()).build().useDefaultResponseMessages(false);
 
 	}
 	

@@ -15,6 +15,10 @@ import org.springframework.web.bind.annotation.RestController;
 import com.home.study.entities.User;
 import com.home.study.services.UserService;
 
+import io.swagger.annotations.ApiOperation;
+import io.swagger.annotations.ApiResponse;
+import io.swagger.annotations.ApiResponses;
+
 //import io.micrometer.core.annotation.Timed;
 
 /**
@@ -42,6 +46,12 @@ public class UserController {
 	}
 	
 	@GetMapping(value = "/{userId}")
+	@ApiOperation(value ="Return a user for a userId ", response =User.class)
+	@ApiResponses(value = {
+			 @ApiResponse(code = 200, message ="The record was found") ,
+			 @ApiResponse(code = 404, message = "The record was not found")
+			 })
+
 	public ResponseEntity<User> getUserById(@PathVariable ("userId") Integer id){
 		return new ResponseEntity<User>(userService.findUserById(id), HttpStatus.OK);
 	}

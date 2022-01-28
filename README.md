@@ -1,1 +1,1 @@
-# study-spring-boot
+# study-spring-boot 2.6
