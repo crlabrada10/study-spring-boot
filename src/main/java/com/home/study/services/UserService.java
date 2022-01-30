@@ -2,7 +2,11 @@ package com.home.study.services;
 
 import java.util.Optional;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.CacheEvict;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageRequest;
 import org.springframework.http.HttpStatus;
@@ -14,7 +18,11 @@ import com.home.study.repositories.UserRepository;
 
 @Service
 public class UserService {
+	
+	
+	private static final Logger log = LoggerFactory.getLogger(UserService.class);
 
+	
 	@Autowired
 	private UserRepository userRepository;
 
@@ -46,16 +54,24 @@ public class UserService {
 
 	public User findUserById(Integer id) {
 		return userRepository.findById(id).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Role id %d no existe", id)));
+				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Role id %s no existe", id)));
 	}
 	
+	@Cacheable(value = "users")
 	public User findUserUsername(String username) {
+		log.info("Getting user by username {}", username);
 		return userRepository.findByUsername(username).orElseThrow(
-				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Role id %d no existe", username)));
+				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Role id %s no existe", username)));
 	}
 	
 	public User findUserUsernameAndPassword(String username, String password) {
 		return userRepository.findByUsernameAndPassword(username, password).orElseThrow(
 				() -> new ResponseStatusException(HttpStatus.NOT_FOUND, String.format("Role id %s no existe", username)));
+	}
+	
+	@CacheEvict(value = "users")
+	public void deleteUserByUsername(String username) {
+		User u = findUserUsername(username);
+		userRepository.delete(u);
 	}
 }

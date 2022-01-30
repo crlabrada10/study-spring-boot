@@ -4,6 +4,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.data.domain.Page;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -33,11 +34,12 @@ public class UserController {
 	private UserService userService;
 	
 	@GetMapping()
-	//@Timed(value = "get.user")
+	//@Timed(value = "get.user") //para definir tus metricas
 	public ResponseEntity<Page<User>> getUser(@RequestParam(required = false, value= "page",defaultValue = "0") int page, 
 											  @RequestParam(required = false, value= "size",defaultValue = "10") int size){
 		return new ResponseEntity<Page<User>>(userService.getUsers(page,size), HttpStatus.OK);
 	}
+	
 	
 	@GetMapping(value = "/usernames")
 	public ResponseEntity<Page<String>> getNames(@RequestParam(required = false, value= "page",defaultValue = "0") int page, 
@@ -64,6 +66,12 @@ public class UserController {
 	@PostMapping
 	public ResponseEntity<User> authenticate(@RequestBody User user){
 		return new ResponseEntity<User>(userService.findUserUsernameAndPassword(user.getUsername(), user.getPassword()), HttpStatus.OK);
+	}
+	
+	@DeleteMapping( "/username/{username}")
+	public ResponseEntity<Void> deleteUser(@PathVariable("username") String username){
+		userService.deleteUserByUsername(username);
+		return new ResponseEntity<>(HttpStatus.NO_CONTENT);
 	}
 
 }

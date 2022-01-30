@@ -1,5 +1,6 @@
 package com.home.study.entities;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.Objects;
 
@@ -8,6 +9,8 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.OneToOne;
 import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
@@ -19,7 +22,12 @@ import javax.persistence.TemporalType;
 
 @Entity
 @Table(name = "profile")
-public class Profile {
+public class Profile implements Serializable{
+
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -35,6 +43,18 @@ public class Profile {
 	@Column(name = "birth_date")
 	@Temporal(TemporalType.DATE)
 	private Date birthDate;
+
+	@OneToOne
+	@JoinColumn(name = "user_id", referencedColumnName = "id")
+	private User user;
+
+	public User getUser() {
+		return user;
+	}
+
+	public void setUser(User user) {
+		this.user = user;
+	}
 
 	public Integer getId() {
 		return id;
@@ -84,5 +104,5 @@ public class Profile {
 		Profile other = (Profile) obj;
 		return Objects.equals(id, other.id);
 	}
-	
+
 }
