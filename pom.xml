@@ -76,13 +76,17 @@
 			<artifactId>springfox-swagger-ui</artifactId>
 			<version>2.9.2</version>
 		</dependency>
-		
+
 		<!-- Para el cache de spring -->
 		<dependency>
 			<groupId>org.springframework.boot</groupId>
 			<artifactId>spring-boot-starter-cache</artifactId>
 		</dependency>
-
+		<!-- Para la seguridad -->
+		<dependency>
+			<groupId>org.springframework.boot</groupId>
+			<artifactId>spring-boot-starter-security</artifactId>
+		</dependency>
 	</dependencies>
 
 
@@ -95,7 +99,7 @@
 			<plugin>
 				<groupId>org.apache.maven.plugins</groupId>
 				<artifactId>maven-resources-plugin</artifactId>
-				<version>3.1.0</version> 
+				<version>3.1.0</version>
 			</plugin>
 		</plugins>
 	</build>
